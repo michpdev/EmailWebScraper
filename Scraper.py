@@ -1,4 +1,4 @@
-#Web scraper to pull text from website 
+#Web scraper to pull text from Cornell Class website 
 import requests
 from bs4 import BeautifulSoup
 import csv
@@ -22,7 +22,7 @@ for row in table.findAll('div',
 	quote['author'] = row.img['alt'].split(" #")[1]
 	quotes.append(quote)
 
-filename = 'inspirational_quotes.csv'
+filename = 'professors.csv'
 with open(filename, 'w', newline='') as f:
 	w = csv.DictWriter(f,['theme','url','img','lines','author'])
 	w.writeheader()
