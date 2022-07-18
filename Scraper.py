@@ -3,28 +3,26 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
-URL = "http://www.values.com/inspirational-quotes"
+URL = "https://classes.cornell.edu/browse/roster/FA22/subject/CS"
 r = requests.get(URL)
 
 soup = BeautifulSoup(r.content, 'html5lib')
 
-quotes=[] # a list to store quotes
+professors=[] # a list to store professors
 
-table = soup.find('div', attrs = {'id':'all_quotes'})
+table = soup.find('div', attrs = {"data-roster-slug":"FA22"})
 
-for row in table.findAll('div',
-						attrs = {'class':'col-6 col-lg-4 text-center margin-30px-bottom sm-margin-30px-top'}):
-	quote = {}
-	quote['theme'] = row.h5.text
-	quote['url'] = row.a['href']
-	quote['img'] = row.img['src']
-	quote['lines'] = row.img['alt'].split(" #")[0]
-	quote['author'] = row.img['alt'].split(" #")[1]
-	quotes.append(quote)
+for row in table.findAll('span',
+						attrs = {'class':'tooltips-iws'}):
+	professor = {}
+	professor['first'] = row.h5.text
+	professor['last'] = row.a['href']
+	professor['netid'] = row.img['src']
+	professors.append(professor)
 
 filename = 'professors.csv'
 with open(filename, 'w', newline='') as f:
-	w = csv.DictWriter(f,['theme','url','img','lines','author'])
+	w = csv.DictWriter(f,['first','last','netid'])
 	w.writeheader()
-	for quote in quotes:
-		w.writerow(quote)
+	for professor in professors:
+		w.writerow(professor)
