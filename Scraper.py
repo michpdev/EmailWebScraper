@@ -15,7 +15,7 @@ table = soup.find('div', attrs = {"data-roster-slug":"FA22"})
 for row in table.findAll('span',
 						attrs = {'class':'tooltips-iws'}):
 	professor = {}
-	professor['first'] = row.h5.text
+	professor['first'] = row.text['data-content']
 	professor['last'] = row.a['href']
 	professor['netid'] = row.img['src']
 	professors.append(professor)
